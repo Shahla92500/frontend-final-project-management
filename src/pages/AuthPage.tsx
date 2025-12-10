@@ -14,16 +14,19 @@ function AuthPage() {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   if (!auth) return null;
-  const {logIn, register} = auth;
+  const {logIn, register} = auth; 
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       setError("");
       setLoading(true);
+            // api logIn is called here
       await logIn(email,password); //=> call login function in AuthProvider
-      navigate("/api/projects");
-      // api call here
+
+            // api call here
+      navigate("/projects");
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error.message);
@@ -40,8 +43,9 @@ function AuthPage() {
       setError("");
       setLoading(true);
       await register(username, email, password); // => call register function in AuthProvider
-      navigate("api//projects"); //=> navigate to the page that is defined in App.tx for /projects
-      // api call herewhat is middle ware 
+       // api call herewhat is middle ware 
+      // navigate("/projects"); //=> navigate to the page that is defined in App.tx for /projects
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error.message);
@@ -58,7 +62,7 @@ function AuthPage() {
       </h1>
 
       {/* ERROR  */}
-      {error && <div>{error}</div>}
+      {error && <div className="mt-4 text-red-400">{error}</div>}
 
       {/* FORM  */}
       {showRegister ? (
@@ -68,43 +72,29 @@ function AuthPage() {
         >
           <div className="text-xl font-bold">Register</div>
 
-          <label htmlFor="username">
-            Username:
+          <label htmlFor="username">  Username:
             <input
-              type="text"
-              name="username"
-              id=""
-              value={username}
+              type="text" name="username" value={username} // id=""
               onChange={(e) => setUsername(e.target.value)}
-              className="ml-2 border rounded"
+              className="ml-2 border rounded text-blue"
             />
           </label>
-          <label htmlFor="email">
-            Email:
-            <input
-              type="text"
-              name="email"
-              id=""
-              value={email}
+          <label htmlFor="email"> Email:
+            <input type="text" name="email" value={email} // id="" 
               onChange={(e) => setEmail(e.target.value)}
-              className="ml-10 border rounded"
+              className="ml-10 border rounded text-blue"
             />
           </label>
-          <label htmlFor="password">
-            Password:
-            <input
-              type="password"
-              name="password"
-              id=""
-              value={password}
+          <label htmlFor="password"> Password:
+            <input type="password" name="password" value={password} // id=""
               onChange={(e) => setPassword(e.target.value)}
-              className="ml-3 border rounded"
+              className="ml-3 border rounded text-blue"
             />
           </label>
 
           <input
             type="submit"
-            value="Register"
+            value={loading ? "Loading..." : "Register"}
             className="border py-2 px-4 rounded"
           />
 
@@ -119,32 +109,21 @@ function AuthPage() {
           <div className="text-xl font-bold">Login</div>
           <label htmlFor="email">
             Email:
-            <input
-              type="text"
-              name="email"
-              id=""
-              value={email}
+            <input type="text" name="email" value={email} // id=""
               onChange={(e) => setEmail(e.target.value)}
-              className="ml-10 border rounded"
+              className="ml-10 border rounded text-blue-300"
             />
           </label>
           <label htmlFor="password">
             Password:
-            <input
-              type="password"
-              name="password"
-              id=""
-              value={password}
+            <input type="password" name="password" value={password} // id=""
               onChange={(e) => setPassword(e.target.value)}
-              className="ml-3 border rounded"
+              className="ml-3 border rounded text-blue-500"
             />
           </label>
-          <input
-            type="submit"
-            value="Register"
+          <input type="submit" value={loading ? "Loading..." : "Login"}
             className="border py-2 px-4 rounded"
           />
-
           {/* LOADING  */}
           {loading && <div className="animate-pulse">...</div>}
         </form>

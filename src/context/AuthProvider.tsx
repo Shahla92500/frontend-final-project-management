@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import type { User } from "../types";
 import { apiClient } from "../clients/api";
 
@@ -34,9 +34,8 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(() => {
     try {
    // Check if there is a token in localStorage and get it 
-     const value = localStorage.getItem("token");
-     return value ? JSON.parse(value) : null;
-
+      const value = localStorage.getItem("token");
+      return value ? JSON.parse(value) : null;
     } catch (error) {
       console.error(error);
       return null;
@@ -44,19 +43,21 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   });
 
 // If token exists on load, set default Authorization header
-  if (token) {
-    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-  }
-  // useEffect(() => {
-  //   try {
-
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }, []);
+  
+  useEffect(() => {
+    if (token) {
+      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      console.log("Auth header (from useEffect):", apiClient.defaults.headers.common["Authorization"]);
+    } else {
+      delete apiClient.defaults.headers.common["Authorization"];
+    }
+  }, [token]);
+  
 
   const logIn = async (email: string, password: string) => {
     const res = await apiClient.post("/api/users/login", {email, password})
+    console.log("LOGIN RESPONSE:", res.data);
+
     const {user, token} = res.data;
     // setting user & token
     setUser(user);
@@ -67,12 +68,15 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     localStorage.setItem("token", JSON.stringify(token));
 
     // setting token in Aurothorization page
+    console.log(`Bearer ${token}`);
+    
     apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-
+    console.log("Auth header set to:", apiClient.defaults.headers.common["Authorization"]);
   };
 
   const register = async (username: string, email: string, password: string) => {
     const res = await apiClient.post("/api/users/register", {username,email, password })
+    console.log("LOGIN RESPONSE:", res.data);
     const {user,token} = res.data;
     setToken(token);
     setUser(user);

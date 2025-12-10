@@ -11,8 +11,9 @@ export interface User {
   githubId?: string;
 }
 export interface Task {
+  _id: string;
   title: String;
   description: String;
-  status: ['todo', 'in-progress', 'done']
+  status: 'todo'| 'in-progress'| 'done';
 }
 

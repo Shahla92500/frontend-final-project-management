@@ -1,9 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { apiClient } from "../clients/api";
+import { AuthContext } from "../context/AuthProvider";
 import { Link } from "react-router-dom";
 import type { Project } from "../types";
 
 function ProjectsPage() {
+  const auth = useContext(AuthContext);
+  const token = auth?.token;
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -12,12 +15,22 @@ function ProjectsPage() {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
+       if (!token) returnShah
     const fetchProjects = async () => {
       try {
         setLoading(true);
         const res = await apiClient.get("/api/projects");
-        console.log(res.data);
-        setProjects(res.data);
+        console.log("Headers sent:", apiClient.defaults.headers.common);
+console.log("Response status:", res.status);
+        console.log("API /api/projects response:",res.data);
+
+       // Make sure I always store an array in state
+      const data = Array.isArray(res.data)
+        ? res.data
+        : res.data.projects ?? [];   // adjust to match backend shape
+        
+        setProjects(data);
+        console.log("API response:",data);
       } catch (error : any) {
         console.log(error);
         setError(error.message);
@@ -71,26 +84,18 @@ function ProjectsPage() {
       >
         <label htmlFor="project-name">Project Name: </label>
         <input
-          type="text"
-          name="project-name"
-          className="border"
-          value={name}
+          type="text" name="project-name"  className="border"  value={name}
           onChange={(e) => setName(e.target.value)}
         />
 
         <label htmlFor="project-description">Project Description</label>
         <input
-          type="text"
-          name="project-description"
-          className="border"
-          value={description}
+          type="text" name="project-description" className="border" value={description}
           onChange={(e) => setDescription(e.target.value)}
         />
 
         <input
-          type="submit"
-          value="Create Project"
-          className="mt-auto bg-sky-500 rounded"
+          type="submit"  value="Create Project" className="mt-auto bg-sky-500 rounded"
         />
       </form>
 
