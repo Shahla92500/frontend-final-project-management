@@ -1,9 +1,195 @@
+
+          /* /projects/:projectId  -> task list */
+import { useEffect, useState } from "react";
+import { useParams, Link } from "react-router-dom";
+// import { apiClient } from "../clients/api";
+type TaskStatus = "todo" | "in-progress" | "done";
+
+export type Task = {
+  _id: string;
+  project: string;       // projectId
+  title: string;
+  description: string;
+  status: TaskStatus;
+};
+
+const DUMMY_TASKS: Task[] = [
+  { _id: "t1", project: "p1", title: "Set up backend", description: "Create Node/Express server", status: "in-progress" },
+  { _id: "t2", project: "p1", title: "Design UI", description: "Create wireframes", status: "todo" },
+  { _id: "t3", project: "p2", title: "Write tests", description: "Add unit tests", status: "done" },
+];
+
+
 function TaskPage() {
+ const { projectId } = useParams();
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [showForm, setShowForm] = useState(false);
+
+  const [taskTitle, setTaskTitle] = useState("");
+  const [taskDescription, setTaskDescription] = useState("");
+  const [taskStatus, setTaskStatus] = useState<TaskStatus>("todo");
+
+  // Fetch tasks (mocked for now before integration)
+   useEffect(() => {
+      if (!projectId) return;
+
+    // FRONTEND-ONLY: filter dummy tasks by project
+    setTasks(DUMMY_TASKS.filter((t) => t.project === projectId));
+
+    // When you hook up backend:
+    // const res = await apiClient.get(`/api/projects/${projectId}/tasks`);
+    // setTasks(res.data);
+  }, [projectId]);
+
+    const handleAddTask = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!projectId || !taskTitle.trim()) return;
+
+    const newTask: Task = {
+      _id: crypto.randomUUID(),
+      project: projectId,
+      title: taskTitle,
+      description: taskDescription,
+      status: taskStatus,
+    };
+
+    setTasks((prev) => [...prev, newTask]);
+    setTaskTitle("");
+    setTaskDescription("");
+    setTaskStatus("todo");
+    setShowForm(false);
+  };
+
+  const handleDeleteTask = (taskId: string) => {
+    setTasks((prev) => prev.filter((t) => t._id !== taskId));
+  };
+// EDIT TASK (simple title edit)
+  const handleEditTask = (taskId: string) => {
+    const task = tasks.find(task => task._id === taskId) 
+    if (!task) return;
+    const newTitle = window.prompt("New title:", task.title);
+    if (!newTitle) return;
+
+    const updated: Task = { ...task, title: newTitle };
+    //after inntegration , uncoment this:
+  // await apiClient.put(`/api/projects/${projectId}/tasks/${taskId}`, updated);
+    setTasks((prev) =>
+      prev.map((t) => (t._id === task._id ? updated : t))
+    );
+  };
   return (
+    <section>
+      <h2 className="text-2xl font-semibold mb-4">Tasks</h2>
 
-      <h1 className="text-4xl font-bold text-white">
-        Project Manager App TaskPage</h1>
+      {/* ADD TASK BUTTON */}
+      {!showForm && (
+        <button
+          className="mb-4 bg-sky-500 px-4 py-2 rounded"
+          onClick={() => setShowForm(true)}
+        >
+          Add New Task
+        </button>
+      )}
 
+      {/* NEW TASK FORM */}
+      {showForm && (
+        <form
+          onSubmit={handleAddTask}
+          className="border p-3 rounded flex flex-col gap-2 max-w-md mb-6"
+        >
+          <label>
+            Title:
+            <input
+              className="border rounded w-full text-blue-300 px-2"
+              value={taskTitle}
+              onChange={(e) => setTaskTitle(e.target.value)}
+            />
+          </label>
+
+          <label>
+            Description:
+            <textarea
+              className="border rounded w-full text-blue-300 px-2"
+              value={taskDescription}
+              onChange={(e) => setTaskDescription(e.target.value)}
+            />
+          </label>
+
+          <label>
+            Status:
+            <select
+              className="border rounded text-blue-300 px-2"
+              value={taskStatus}
+              onChange={(e) =>
+                setTaskStatus(e.target.value as TaskStatus)
+              }
+            >
+              <option value="todo">To Do</option>
+              <option value="in-progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
+          </label>
+
+          <div className="flex gap-2 mt-2">
+            <button
+              type="submit"
+              className="bg-sky-500 px-4 py-2 rounded"
+            >
+              Save Task
+            </button>
+            <button
+              type="button"
+              className="bg-gray-600 px-4 py-2 rounded"
+              onClick={() => setShowForm(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+
+      {/* TASK LIST */}
+      <ul className="flex flex-col gap-3">
+        {tasks.map((task) => (
+          <li
+            key={task._id}
+            className="border rounded p-3 flex justify-between items-start"
+          >
+            <div>
+              <div className="font-semibold">{task.title}</div>
+              <div className="text-sm text-gray-300">
+                {task.description}
+              </div>
+              <div className="text-xs mt-1">
+                Status: <span className="font-medium">{task.status}</span>
+              </div>
+            </div>
+
+            <div className="flex gap-2">
+              {/* Go to detail view */}
+              <button
+                type="button"
+                onClick={() => handleEditTask(task._id)}
+                className="px-3 py-1 text-sm bg-blue-600 rounded"  >
+                Edit 
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDeleteTask(task._id)}
+                className="px-3 py-1 text-sm bg-red-600 rounded">
+                Delete
+              </button>
+            </div>
+          </li>
+        ))}
+
+        {tasks.length === 0 && (
+          <div className="text-sm text-gray-300">
+            No tasks yet. Click “Add New Task”.
+          </div>
+        )}
+      </ul>
+    </section>
   );
 }
 export default TaskPage;

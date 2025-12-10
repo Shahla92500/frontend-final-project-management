@@ -3,6 +3,12 @@ import { apiClient } from "../clients/api";
 import { AuthContext } from "../context/AuthProvider";
 import { Link } from "react-router-dom";
 import type { Project } from "../types";
+//============it should be removed after integration BE & FE
+const DUMMY_PROJECTS: Project[] = [
+  { _id: "p1", name: "Project One", description: "First test project" },
+  { _id: "p2", name: "Project Two", description: "Second test project" },
+];
+//================================
 
 function ProjectsPage() {
   const auth = useContext(AuthContext);
@@ -15,31 +21,35 @@ function ProjectsPage() {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-       if (!token) returnShah
-    const fetchProjects = async () => {
-      try {
-        setLoading(true);
-        const res = await apiClient.get("/api/projects");
-        console.log("Headers sent:", apiClient.defaults.headers.common);
-console.log("Response status:", res.status);
-        console.log("API /api/projects response:",res.data);
+      //  if (!token) return
+      // const fetchProjects = async () => {
+      // try {
+      //   setLoading(true);
+      //   const res = await apiClient.get("/api/projects");
+      //   console.log("Headers sent:", apiClient.defaults.headers.common);
+      //   console.log("Response status:", res.status);
+      //   console.log("API /api/projects response:",res.data);
 
-       // Make sure I always store an array in state
-      const data = Array.isArray(res.data)
-        ? res.data
-        : res.data.projects ?? [];   // adjust to match backend shape
+      //  // Make sure I always store an array in state
+      // const data = Array.isArray(res.data)
+      //   ? res.data
+      //   : res.data.projects ?? [];   // adjust to match backend shape
         
-        setProjects(data);
-        console.log("API response:",data);
-      } catch (error : any) {
-        console.log(error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+      //   setProjects(data);
+      //   console.log("API response:",data);
 
-    fetchProjects();
+    //   } catch (error : any) {
+    //     console.log(error);
+    //     setError(error.message);
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+
+    // fetchProjects();
+
+     setProjects(DUMMY_PROJECTS); //==it should be removed after integration BE & FE    
+
   }, []);
 
   if (loading) return <div className="text-3xl text-white">Loading...</div>;
@@ -110,10 +120,8 @@ console.log("Response status:", res.status);
             >
               <div className="font-bold">{project.name}</div>
               <div>{project.description}</div>
-              <Link
-                to={`/projects/${project._id}`}
-                className="mt-auto bg-sky-500 rounded"
-              >
+              <Link to={`/projects/${project._id}`}
+                className="mt-auto bg-sky-500 rounded" >
                 See Project
               </Link>
             </div>
