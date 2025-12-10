@@ -100,7 +100,20 @@ const handleDeleteProject = async (projectId: string) => {
   await apiClient.delete(`/api/projects/${projectId}`);
     setProjects((prev) => prev.filter((p) => p._id !== projectId));
 };
-
+    //add tasks for this project
+// useEffect(() => {
+//     const fetchProjectTasks = async () => {
+//         try {
+//             const tasks = await apiClient.get(`/api/projects/${projectId}/tasks`);
+//             // state
+//             // loading error
+//         } catch (error) {
+//             console.error(error);
+            
+//         }
+//     }
+//     // fetchProjectTasks()
+//   }, [projectId])
   return (
     <div className="text-white">
       <h1 className="text-4xl font-bold text-white">Projects</h1>

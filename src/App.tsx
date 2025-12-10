@@ -7,6 +7,7 @@ import TaskPage from "./pages/TaskPage";
 import TaskDetailPage from "./pages/TaskDetailPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./componenets/Navbar";
+import RequireAuth from "./pages/RequireAuth";
 
 /*
 * Set up routing in App
@@ -24,9 +25,18 @@ function App() {
           <Route path="/auth" element={<AuthPage />}/>
 
           {/* /projects ->Projects */}
-          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects" element={
+            <RequireAuth>
+               <ProjectsPage />
+            </RequireAuth>
+          } />
+
           {/* /projects/:projectId ->Project Detail */}
-          <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
+          <Route path="/projects/:projectId" element={
+              <RequireAuth>
+                <ProjectDetailPage />
+              </RequireAuth>
+          } />
 
           {/* /projects/:projectId  -> task list */ }
           <Route index element={<TaskPage />} />
