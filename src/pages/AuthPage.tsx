@@ -11,6 +11,7 @@ function AuthPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   if (!auth) return null;
@@ -41,12 +42,19 @@ console.log("Before Navigating to project", email);
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      
       setError("");
       setLoading(true);
       await register(username, email, password); // => call register function in AuthProvider
-       // api call herewhat is middle ware 
+        // clear the form:
+      setUsername("");
+      setEmail("");
+      setPassword("");
+      console.log("Account created! Click below to go to your projects.");
+      // api call herewhat is middle ware 
       // navigate("/projects"); //=> navigate to the page that is defined in App.tx for /projects
-
+        //go to Projects page
+      navigate("/projects");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error.message);

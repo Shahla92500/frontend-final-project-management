@@ -36,6 +36,8 @@ Tech Stack:
 # Project Structure :
 project-dashboard/
 ├── src/
+│   └── clients
+│   │   └── api.ts
 │   ├── components/
 │   │   ├── Navbar.tsx
 │   ├── context/
@@ -48,12 +50,10 @@ project-dashboard/
 │   │   ├── RequireAuth.tsx
 │   │   ├── TaskPage.tsx
 │   │   └── TaskDetailPage.tsx
-│   └── dashboard/
-│   │   └── Dashboard.tsx
 │   ├── types/
 │   │   └── index.ts
-│   ├── utils/
-│   │   └── taskUtils.ts
+│   ├── index.html
+│   │── index.css
 │   ├── App.tsx               # is general router
 ├── main.tsx
 └── package.json
@@ -91,32 +91,8 @@ project-dashboard/
 ✅ Tasks can ONLY be managed by the user who owns the parent project.
 ✅ Projects and Tasks routes are Protected & Nested
 
-## Dependencies
+## Testing: # Use Postman to test API routes: 
 
-- Express
-- MongoDB/Mongoose
-- Dotenv
-- Morgan
-- Cors
-- bcrypt
-- jsonwebtoken
-- passport
-
-
-## Dev Dependencies
-
-- Nodemon
-## Running the Project:
-
-# Initialize project by running these commandes:
-    * npm install
-    * npm i express mongoose bcrypt jsonwebtoken dotenv morgan cors
-# run the server: 
-    * npm run dev
-
-## Testing:
-
-# Use Postman to test API routes.
 - Recommended testing flow, CRUD endpoints
 * Register user                                     (/api/users/register)
 * Login to obtain JWT: in body=> (email + password) (/api/users/login)
@@ -137,89 +113,40 @@ project-dashboard/
 * Test ownership rules with different users
 
 This project demonstrates a production-ready backend API with secure access control, hierarchical data modeling, and clean Express architecture. It serves as a strong foundation for scaling into a full-stack productivity platform.
+## Dependencies
+- Express
+- MongoDB/Mongoose
+- Dotenv
+- Morgan
+- Cors
+- bcrypt
+- jsonwebtoken
+- passport
+
+## Dev Dependencies
+
+- Nodemon
+## Running the Project:
+
+# Initialize project by running these commandes:
+    * npm install
+    * npm i express mongoose bcrypt jsonwebtoken dotenv morgan cors
+# run the server: 
+    * npm run dev
 
 
 
+## how to deploy frontend on Netlify
+Frontend deployment:
+Step 1: https://www.netlify.com/ 
+Step 2: Sign up with GitHub or email
+Step 3: Add new project:
+Step 4: Click "GitHub" to pull from GitHub repos
+Step 5: Click "All repos"
+Step 6: Search for your frontend project to deploy and click it
+Step 7: Confirm that it deploys with "npm run build"
+Step 8: Click "deploy"
+Step 9:Click on project link to go to the project
 
 
 
-
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## React Compiler
-
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
-
-Note: This will impact Vite dev & build performances.
-
-
-
-
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
