@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import TaskPage from './TaskPage'
 // import type { Project, Task } from "../types";
 import type { Project } from "../types";
+import BackButton from "../componenets/BackButton"
 
 function ProjectDetailsPage() {
   const { projectId } = useParams();
@@ -41,6 +42,7 @@ function ProjectDetailsPage() {
 
   return (
    <div className="text-white">
+        <BackButton />
       {/* PROJECT INFO */}
       <h1 className="text-4xl">Project Details</h1>
 

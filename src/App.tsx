@@ -15,7 +15,7 @@ import RequireAuth from "./pages/RequireAuth";
 function App() {
   return (
     <>
-      <div className="p-5 bg-zinc-900 h-screen">
+      <div className="p-5 h-screen text-black bg-green-900 ">
       <Navbar />
         <Routes>
           {/* Home page */}

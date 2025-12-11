@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { apiClient } from "../clients/api";
+
 type TaskStatus = "todo" | "in-progress" | "done";
 //import {type Task} from "../types/index";
 
@@ -150,6 +151,7 @@ function TaskPage() {
   };
   return (
       <section className="mt-10">
+
       <h2 className="text-2xl font-semibold mb-4">Tasks</h2>
 
       {error && <div className="text-red-400 mb-4">{error}</div>}

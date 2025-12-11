@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import { apiClient } from "../clients/api";
+import BackButton from "../componenets/BackButton";
 
 type TaskStatus = "todo" | "in-progress" | "done";
 
@@ -91,6 +92,7 @@ function TaskDetailPage() {
 
   return (
     <section className="mt-8 text-white">
+            <BackButton />
       <h2 className="text-2xl font-semibold mb-4">Task Detail</h2>
       {error && <div className="mb-4 text-red-400">{error}</div>}
 
