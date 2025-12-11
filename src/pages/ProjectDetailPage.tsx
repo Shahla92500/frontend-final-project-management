@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiClient } from "../clients/api";
+//import { apiClient } from "../clients/api";
 import { useParams } from "react-router-dom";
 import TaskPage from './TaskPage'
 // import type { Project, Task } from "../types";
@@ -12,14 +12,10 @@ import type { Project } from "../types";
 //   status: "todo" | "in-progress" | "done";
 // };
 
-// const DUMMY_PROJECTS: Project[] = [
-//   { _id: "p1", name: "Project One", description: "First test project" },
-//    { _id: "p2", name: "Project Two", description: "Second test project" },
-// ];
-
 function ProjectDetailsPage() {
   const { projectId } = useParams();
-  const [project, setProject] = useState<Project | null>(null);
+  // const [project, setProject] = useState<Project | null>(null);
+  const project = useState<Project | null>(null)[0];
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 

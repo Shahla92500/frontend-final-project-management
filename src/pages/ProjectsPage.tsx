@@ -99,34 +99,34 @@ const startEditProject = (project: Project) => {
   setDescription(project.description);
 };
   // FRONTEND-ONLY edit (no backend yet)
-const handleEditProject = async (projectId: string) => {
-    // Find the project in state
-  const project = projects.find((p) => p._id === projectId);
-  if (!project) return;
-  // Ask user for new values
-  const newName = window.prompt("New project name:", project.name);
-  if (!newName || !newName.trim()) return;
+// const handleEditProject = async (projectId: string) => {
+//     // Find the project in state
+//   const project = projects.find((p) => p._id === projectId);
+//   if (!project) return;
+//   // Ask user for new values
+//   const newName = window.prompt("New project name:", project.name);
+//   if (!newName || !newName.trim()) return;
   
-  const newDescription = window.prompt("New project description:", project.description);
-  if (!newDescription || !newDescription.trim()) return;
+//   const newDescription = window.prompt("New project description:", project.description);
+//   if (!newDescription || !newDescription.trim()) return;
   
-   const updatedProject = {
-    ...project,
-    name: newName.trim(),
-    description: newDescription.trim(),
-  };
+//    const updatedProject = {
+//     ...project,
+//     name: newName.trim(),
+//     description: newDescription.trim(),
+//   };
 
-  const res = await apiClient.put(`/api/projects/${projectId}`, {
-    name: updatedProject.name,
-    description: updatedProject.description,
-  });
-  const savedProject = res.data;
+//   const res = await apiClient.put(`/api/projects/${projectId}`, {
+//     name: updatedProject.name,
+//     description: updatedProject.description,
+//   });
+//   const savedProject = res.data;
 
-  setProjects((prev) =>
-    prev.map((p) => (p._id === projectId ? savedProject  : p))
-  );
+//   setProjects((prev) =>
+//     prev.map((p) => (p._id === projectId ? savedProject  : p))
+//   );
 
-};
+// };
 // FRONTEND-ONLY delete
 const handleDeleteProject = async (projectId: string) => {
   // only without backend:

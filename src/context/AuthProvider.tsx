@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 import type { User } from "../types";
 import { apiClient } from "../clients/api";
 
