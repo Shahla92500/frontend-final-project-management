@@ -17,7 +17,7 @@ function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const [editingProjectId, setEditingProjectId] = useState<string | null>(null);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
 
@@ -66,41 +66,64 @@ function ProjectsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!name.trim() || !description.trim()) return;//new
     try {
       setLoading(true);
+    if (editingProjectId) {// EDIT EXISTING PROJECT
+      const res = await apiClient.put(`/api/projects/${editingProjectId}`, {
+        name,
+        description,
+      });
+      setProjects((prev) =>
+        prev.map((p) => (p._id === editingProjectId ? res.data : p))
+      );
+      setEditingProjectId(null);
+
+    }else{//new
+     //  CREATE NEW PROJECT
       const res = await apiClient.post("/api/projects", { name, description });
       setProjects((prev) => [...prev, res.data]);
+    } //new
+      setName("")
+      setDescription("")
     } catch (error: any) {
       console.error(error);
       setError(error.message);
     } finally {
       setLoading(false);
-      setName("")
-      setDescription("")
     }
   };
-
+const startEditProject = (project: Project) => {
+  setEditingProjectId(project._id);
+  setName(project.name);
+  setDescription(project.description);
+};
   // FRONTEND-ONLY edit (no backend yet)
-const handleEditProject = (projectId: string) => {
+const handleEditProject = async (projectId: string) => {
+    // Find the project in state
   const project = projects.find((p) => p._id === projectId);
   if (!project) return;
-
+  // Ask user for new values
   const newName = window.prompt("New project name:", project.name);
-  const newDescription = window.prompt(
-    "New project description:",
-    project.description
-  );
-  // later, for integrate backend:
-  // await apiClient.put(`/api/projects/${projectId}`, { name: newName, description: newDescription });
+  if (!newName || !newName.trim()) return;
+  
+  const newDescription = window.prompt("New project description:", project.description);
+  if (!newDescription || !newDescription.trim()) return;
+  
+   const updatedProject = {
+    ...project,
+    name: newName.trim(),
+    description: newDescription.trim(),
+  };
 
-  if (!newName || !newDescription) return;
+  const res = await apiClient.put(`/api/projects/${projectId}`, {
+    name: updatedProject.name,
+    description: updatedProject.description,
+  });
+  const savedProject = res.data;
 
   setProjects((prev) =>
-    prev.map((p) =>
-      p._id === projectId
-        ? { ...p, name: newName, description: newDescription }
-        : p
-    )
+    prev.map((p) => (p._id === projectId ? savedProject  : p))
   );
 
 };
@@ -135,7 +158,9 @@ const handleDeleteProject = async (projectId: string) => {
         />
 
         <input
-          type="submit"  value="Create Project" className="mt-auto bg-sky-500 rounded"
+          type="submit"  
+          value={editingProjectId ? "Update Project" : "Create Project"}
+          className="mt-auto bg-sky-500 rounded"
         />
       </form>
 
@@ -153,15 +178,16 @@ const handleDeleteProject = async (projectId: string) => {
               <div className="flex flex-col gap-2 mt-2">
                 <Link
                   to={`/projects/${project._id}`}
-                  className="mt-auto bg-sky-500 rounded px-2 py-1"
+                  className="mt-auto bg-sky-400 rounded px-2 py-1"
                 >
                   See Project
                 </Link>
 
                 <button
                   type="button"
-                  onClick={() => handleEditProject(project._id)}
-                  className="bg-yellow-500 rounded px-2 py-1"
+                  // onClick={() => handleEditProject(project._id)}
+                  onClick={() => startEditProject(project)}
+                  className="bg-yellow-400 rounded px-2 py-1"
                 >
                   Edit
                 </button>
@@ -169,7 +195,7 @@ const handleDeleteProject = async (projectId: string) => {
                 <button
                   type="button"
                   onClick={() => handleDeleteProject(project._id)}
-                  className="bg-red-600 rounded px-2 py-1"
+                  className="bg-red-400 rounded px-2 py-1"
                 >
                   Delete
                 </button>

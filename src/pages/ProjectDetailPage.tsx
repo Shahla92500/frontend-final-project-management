@@ -36,11 +36,11 @@ function ProjectDetailsPage() {
     //     setProject(res.data);
 //
      // FRONTEND ONLY – without BE:
-        setProject({
-          _id: projectId,
-          name: "Project One",
-          description: "First test project",
-        });
+        // setProject({
+        //   _id: projectId,
+        //   name: "Project One",
+        //   description: "First test project",
+        // });
 //
  
       } catch (error : any) {
@@ -51,10 +51,7 @@ function ProjectDetailsPage() {
       }
     };
     fetchProjectDetails();
-//=====should be removed after integration
-    // const found = DUMMY_PROJECTS.find((p) => p._id === projectId) || null;
-    // setProject(found);
-//=============
+
   }, [projectId]);
 
 
