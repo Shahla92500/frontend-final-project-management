@@ -5,6 +5,8 @@ import { AuthContext } from "../context/AuthProvider";
 export default function RequireAuth({ children }: { children: JSX.Element }) {
   const auth = useContext(AuthContext);
   if (!auth) return null;
+  console.log("Auth: ", auth);
+  
 
   // no token → send to /auth
   if (!auth.token) return <Navigate to="/auth" replace />;

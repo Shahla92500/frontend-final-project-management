@@ -1,7 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { apiClient } from "../clients/api";
 import { AuthContext } from "../context/AuthProvider";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { Project } from "../types";
 //============it should be removed after integration BE & FE
 // const DUMMY_PROJECTS: Project[] = [
@@ -12,6 +12,7 @@ import type { Project } from "../types";
 
 function ProjectsPage() {
   const auth = useContext(AuthContext);
+   const navigate = useNavigate();
   const token = auth?.token;
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(false);
@@ -21,22 +22,34 @@ function ProjectsPage() {
   const [description, setDescription] = useState("");
 
   useEffect(() => {
-       if (!token) return
+            console.log("token: ", token);
+      // if (!token) {        
+      //     navigate("/auth");
+      //     return
+      // } 
+      
       const fetchProjects = async () => {
       try {
         setLoading(true);
+        setError("");
+       console.log("Requesting /api/projects with headers:", apiClient.defaults.headers.common);
         const res = await apiClient.get("/api/projects");
-
+           console.log("Projects response here:", res.data);
       //  // Make sure an array is in state
       const data = Array.isArray(res.data)
         ? res.data : res.data.projects ?? [];   // adjust to match backend shape
         
         setProjects(data);
-      //   console.log("API response:",data);
+        console.log("API response:",data);
 
       } catch (error : any) {
         console.log(error);
-        setError(error.response?.data?.message || error.message);
+        if (error.response?.status === 401) {
+          // token invalid/expired → go back to login
+          navigate("/auth");
+        } else {
+          setError(error.message || "Failed to load projects");
+        }
       } finally {
         setLoading(false);
       }
@@ -46,7 +59,7 @@ function ProjectsPage() {
 
     //  setProjects(DUMMY_PROJECTS); //==it should be removed after integration BE & FE    
 
-  }, []);
+  }, [token]);
 
   if (loading) return <div className="text-3xl text-white">Loading...</div>;
 

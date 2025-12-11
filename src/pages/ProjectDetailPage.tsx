@@ -4,18 +4,18 @@ import { useParams } from "react-router-dom";
 import TaskPage from './TaskPage'
 // import type { Project, Task } from "../types";
 import type { Project } from "../types";
-type Task = {
-  _id: string;
-  project: string;
-  title: string;
-  description: string;
-  status: "todo" | "in-progress" | "done";
-};
+// type Task = {
+//   _id: string;
+//   project: string;
+//   title: string;
+//   description: string;
+//   status: "todo" | "in-progress" | "done";
+// };
 
-const DUMMY_PROJECTS: Project[] = [
-  { _id: "p1", name: "Project One", description: "First test project" },
-   { _id: "p2", name: "Project Two", description: "Second test project" },
-];
+// const DUMMY_PROJECTS: Project[] = [
+//   { _id: "p1", name: "Project One", description: "First test project" },
+//    { _id: "p2", name: "Project Two", description: "Second test project" },
+// ];
 
 function ProjectDetailsPage() {
   const { projectId } = useParams();

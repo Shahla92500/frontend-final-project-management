@@ -37,11 +37,15 @@ Tech Stack:
 project-dashboard/
 ├── src/
 │   ├── components/
+│   │   ├── Navbar.tsx
+│   ├── context/
+│   │   ├── AuthProvider.tsx
 │   ├── pages/
-│   │   ├── LoginPage.tsx
-│   │   ├── RegisterPage.tsx
+│   │   ├── AuthPage.tsx
+│   │   ├── HomePage.tsx
 │   │   ├── ProjectsPage.tsx
 │   │   ├── ProjectDetailPage.tsx
+│   │   ├── RequireAuth.tsx
 │   │   ├── TaskPage.tsx
 │   │   └── TaskDetailPage.tsx
 │   └── dashboard/

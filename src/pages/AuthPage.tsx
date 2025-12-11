@@ -23,6 +23,7 @@ function AuthPage() {
       setLoading(true);
             // api logIn is called here
       await logIn(email,password); //=> call login function in AuthProvider
+console.log("Before Navigating to project", email);
 
             // api call here
       navigate("/projects");

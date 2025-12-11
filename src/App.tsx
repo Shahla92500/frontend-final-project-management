@@ -42,7 +42,7 @@ function App() {
           <Route index element={<TaskPage />} />
 
           {/* /projects/:projectId/tasks/:taskId → task detail */}
-          <Route path="tasks/:taskId" element={<TaskDetailPage />} />
+          <Route path="/tasks/:taskId" element={<TaskDetailPage />} />
         </Routes>
       </div>
     </>

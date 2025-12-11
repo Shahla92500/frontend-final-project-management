@@ -4,14 +4,13 @@ import { apiClient } from "../clients/api";
 
 interface AuthContextType {
   user: User | null;
-  setUser: (user: User) => void;
-  logIn: (username: string, password: string) => void;
-  register: (username: string, email: string, password: string) => void;
+  setUser: (user: User | null) => void;
+  logIn: (email: string, password: string) => Promise<void>;
+  register: (username: string, email: string, password: string) => Promise<void>;
   logOut: () => void;
   token: string | null;
-  setToken: (token: string) => void;
+  setToken: (token: string | null) => void;
 }
-
 // eslint-disable-next-line react-refresh/only-export-components
 export const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -44,59 +43,46 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
 // If token exists on load, set default Authorization header
   
-  useEffect(() => {
-    if (token) {
-      apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      console.log("Auth header (from useEffect):", apiClient.defaults.headers.common["Authorization"]);
-    } else {
-      delete apiClient.defaults.headers.common["Authorization"];
-    }
-  }, [token]);
-  
+  // useEffect(() => {
+  //   if (token) {
+  //     apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  //     console.log("Auth header set:", apiClient.defaults.headers.common["Authorization"]);
+  //   } else {
+  //     delete apiClient.defaults.headers.common["Authorization"];
+  //     console.log("Auth header removed");
+  //   }
+  // }, [token]);
 
-  const logIn = async (email: string, password: string) => {
-    const res = await apiClient.post("/api/users/login", {email, password})
-    console.log("LOGIN RESPONSE:", res.data);
+   const logIn = async (email: string, password: string) => {
+    const res = await apiClient.post("/api/users/login", { email, password });
+    const { user, token } = res.data;
 
-    const {user, token} = res.data;
-    // setting user & token
     setUser(user);
     setToken(token);
-
-    // registering user & token in local storage
     localStorage.setItem("user", JSON.stringify(user));
     localStorage.setItem("token", JSON.stringify(token));
-
-    // setting token in Aurothorization page
     console.log(`Bearer ${token}`);
     
-    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    // apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     console.log("Auth header set to:", apiClient.defaults.headers.common["Authorization"]);
+    console.log("LOGIN RESPONSE:", res.data);
   };
 
-  const register = async (username: string, email: string, password: string) => {
-    const res = await apiClient.post("/api/users/register", {username,email, password })
-    console.log("LOGIN RESPONSE:", res.data);
-    const {user,token} = res.data;
-    setToken(token);
+ const register = async (username: string, email: string, password: string) => {
+    const res = await apiClient.post("/api/users/register", { username, email, password });
+    const { user, token } = res.data;
+
     setUser(user);
-
-    // registering user & token in local storage
+    setToken(token);
     localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("token", JSON.stringify(token));  
-
-     // setting token in Aurothorization page
-    apiClient.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    localStorage.setItem("token", JSON.stringify(token));
   };
 
   const logOut = () => {
     setUser(null);
     setToken(null);
-
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-
-    delete apiClient.defaults.headers.common["Authorization"];
   };
 
   return (
