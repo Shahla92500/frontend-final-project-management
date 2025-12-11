@@ -123,26 +123,6 @@ function TaskPage() {
     const task = tasks.find((t) => t._id === taskId);
     if (!task) return;
 
-    // const newTitle = window.prompt("New title:", task.title);
-    // if (!newTitle) return;
-
-    // const updated: Task = { ...task, title: newTitle };
-
-    // try {
-    //   setError("");
-    //   await apiClient.put(
-    //     `/api/projects/${projectId}/tasks/${taskId}`,
-    //     updated
-    //   );
-
-    //   setTasks((prev) =>
-    //     prev.map((t) => (t._id === taskId ? updated : t))
-    //   );
-    // } catch (err: any) {
-    //   console.error(err);
-    //   setError(err.response?.data?.message || err.message);
-    // }
-
     setEditingTaskId(task._id);
     setTaskTitle(task.title);
     setTaskDescription(task.description);
@@ -176,7 +156,7 @@ function TaskPage() {
           <label>
             Title:
             <input
-              className="border rounded w-full text-blue-300 px-2"
+              className="border rounded w-full text-white px-2"
               value={taskTitle}
               onChange={(e) => setTaskTitle(e.target.value)}
             />
@@ -185,7 +165,7 @@ function TaskPage() {
           <label>
             Description:
             <textarea
-              className="border rounded w-full text-blue-300 px-2"
+              className="border rounded w-full text-white px-2"
               value={taskDescription}
               onChange={(e) => setTaskDescription(e.target.value)}
             />
@@ -194,7 +174,7 @@ function TaskPage() {
           <label>
             Status:
             <select
-              className="border rounded text-blue-300 px-2"
+              className="border rounded text-white px-2"
               value={taskStatus}
               onChange={(e) =>
                 setTaskStatus(e.target.value as TaskStatus)
