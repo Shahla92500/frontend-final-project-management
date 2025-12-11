@@ -23,11 +23,11 @@ function AuthPage() {
     try {
       setError("");
       setLoading(true);
-            // api logIn is called here
+      // api logIn is called here
       await logIn(email,password); //=> call login function in AuthProvider
       console.log("Before Navigating to project", email);
 
-            // api call here
+      // navigate to project  here
       navigate("/projects");
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,11 +54,6 @@ function AuthPage() {
       setEmail("");
       setPassword("");
       console.log("Account created! Click below to go to your projects.");
-      // api call herewhat is middle ware 
-      // navigate("/projects"); //=> navigate to the page that is defined in App.tx for /projects
-        //go to Projects page
-      // navigate("/projects");
- 
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {

@@ -145,8 +145,9 @@ Step 4: Click "GitHub" to pull from GitHub repos
 Step 5: Click "All repos"
 Step 6: Search for your frontend project to deploy and click it
 Step 7: Confirm that it deploys with "npm run build"
-Step 8: Click "deploy"
-Step 9:Click on project link to go to the project
+Step 8: copy link rendering backend and put in env varibale: like : VITE_BACKEND_UR=https://backend-final-project-management.onrender.com
+Step 9:Click "deploy"
+Step 10: Click on project link to go to the project
 
 
 

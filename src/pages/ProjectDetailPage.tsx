@@ -4,13 +4,6 @@ import { useParams } from "react-router-dom";
 import TaskPage from './TaskPage'
 // import type { Project, Task } from "../types";
 import type { Project } from "../types";
-// type Task = {
-//   _id: string;
-//   project: string;
-//   title: string;
-//   description: string;
-//   status: "todo" | "in-progress" | "done";
-// };
 
 function ProjectDetailsPage() {
   const { projectId } = useParams();
@@ -27,18 +20,9 @@ function ProjectDetailsPage() {
       try {
         setLoading(true);
         setError("");        
-          // TO uncomment : when I re-enable backend:
     //     const res = await apiClient.get(`/api/projects/${projectId}`);
     //     setProject(res.data);
-//
-     // FRONTEND ONLY – without BE:
-        // setProject({
-        //   _id: projectId,
-        //   name: "Project One",
-        //   description: "First test project",
-        // });
-//
- 
+
       } catch (error : any) {
           console.log(error);
           setError(error.message);

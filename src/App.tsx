@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import AuthPage from "./pages/AuthPage";
 import ProjectsPage from "./pages/ProjectsPage";
 import ProjectDetailPage from "./pages/ProjectDetailPage";
-import TaskPage from "./pages/TaskPage";
+
 import TaskDetailPage from "./pages/TaskDetailPage";
 import HomePage from "./pages/HomePage";
 import Navbar from "./componenets/Navbar";
@@ -24,25 +24,32 @@ function App() {
           {/* User auth */}
           <Route path="/auth" element={<AuthPage />}/>
 
-          {/* /projects ->Projects */}
+          {/* project list.  /projects ->Projects */}
           <Route path="/projects" element={
             <RequireAuth>
-               <ProjectsPage />
+              <ProjectsPage />
             </RequireAuth>
           } />
-
-          {/* /projects/:projectId ->Project Detail */}
-          <Route path="/projects/:projectId" element={
-              <RequireAuth>
-                <ProjectDetailPage />
-              </RequireAuth>
-          } />
-
-          {/* /projects/:projectId  -> task list */ }
-          <Route index element={<TaskPage />} />
+          {/* Project details (includes TaskPage inside) /projects/:projectId ->Project Detail */}
+          <Route 
+              path="/projects/:projectId" 
+              element={
+                 <RequireAuth>
+                   <ProjectDetailPage />
+                 </RequireAuth>
+              } />
+       {/* Task detail (nested under a project) */}
+        <Route
+          path="/projects/:projectId/tasks/:taskId"
+          element={
+            <RequireAuth>
+              <TaskDetailPage />
+            </RequireAuth>
+          }
+        />
 
           {/* /projects/:projectId/tasks/:taskId → task detail */}
-          <Route path="/tasks/:taskId" element={<TaskDetailPage />} />
+          {/* <Route path="tasks/:taskId" element={<TaskDetailPage />} />  */}
         </Routes>
       </div>
     </>
