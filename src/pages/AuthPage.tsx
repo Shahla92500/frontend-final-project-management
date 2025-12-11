@@ -10,6 +10,7 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [registered, setRegistered] = useState(false);
 
 
   const auth = useContext(AuthContext);
@@ -24,7 +25,7 @@ function AuthPage() {
       setLoading(true);
             // api logIn is called here
       await logIn(email,password); //=> call login function in AuthProvider
-console.log("Before Navigating to project", email);
+      console.log("Before Navigating to project", email);
 
             // api call here
       navigate("/projects");
@@ -46,6 +47,8 @@ console.log("Before Navigating to project", email);
       setError("");
       setLoading(true);
       await register(username, email, password); // => call register function in AuthProvider
+         // Show success message
+      setRegistered(true);
         // clear the form:
       setUsername("");
       setEmail("");
@@ -54,7 +57,9 @@ console.log("Before Navigating to project", email);
       // api call herewhat is middle ware 
       // navigate("/projects"); //=> navigate to the page that is defined in App.tx for /projects
         //go to Projects page
-      navigate("/projects");
+      // navigate("/projects");
+ 
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error(error.message);
@@ -63,6 +68,23 @@ console.log("Before Navigating to project", email);
       setLoading(false);
     }
   };
+  // --- SUCCESS MESSAGE ---
+  if (registered) {
+    return (
+    <div className="text-white flex flex-col items-center justify-center mt-20">
+      <div className="bg-pink-300 text-black p-6 rounded shadow-lg max-w-md text-center">
+        <h1 className="text-2xl font-bold mb-3">Congratulations!</h1>
+        <p className="mb-4">
+          Your user has been registered correctly.
+          <br />
+          If you want to add projects to your name, click on the
+          <span className="font-semibold"> Projects </span>
+          button in the navbar.
+        </p>
+      </div>
+    </div>
+    );
+  }
 
   return (
     <div className="text-white flex flex-col items-center justify-center">
